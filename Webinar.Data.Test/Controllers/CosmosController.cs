@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Webinar.Data.Cosmos.DataContext;
 using Webinar.Data.Cosmos.Model;
 
 namespace Webinar.Data.Test.Controllers
 {
-    [Route("api/[controller]/{action}")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CosmosController : ControllerBase
     {
@@ -20,23 +17,21 @@ namespace Webinar.Data.Test.Controllers
         public CosmosController(CosmosDataContext cosmosDataContext)
         {
             _cosmosDataContext = cosmosDataContext;
+
+            _cosmosDataContext.Database.EnsureCreated();
         }
 
-        [HttpGet]
+        [HttpGet("List")]
         public async Task<IEnumerable<TaskList>> List()
         {
-            await _cosmosDataContext.Database.EnsureCreatedAsync();
-
             var list = _cosmosDataContext.TaskLists.Include(tl => tl.Items).ToList();
 
             return list;
         }
 
-        [HttpPost]
+        [HttpPost("CreateList")]
         public async Task<ActionResult<int>> CreateList(string title)
         {
-            await _cosmosDataContext.Database.EnsureCreatedAsync();
-
             var taskList = new TaskList
             {
                 Title = title
@@ -48,11 +43,9 @@ namespace Webinar.Data.Test.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("AddTaskItem")]
         public async Task<ActionResult<int>> AddTaskItem(string listId, string taskName)
         {
-            await _cosmosDataContext.Database.EnsureCreatedAsync();
-
             var taskList = _cosmosDataContext.TaskLists.FirstOrDefault(tl => tl.Id == listId);
 
             taskList.Items.Add(new TaskItem { Name = taskName });

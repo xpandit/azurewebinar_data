@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
+using Swashbuckle.AspNetCore.Swagger;
 using Webinar.Data.Cosmos.DataContext;
 using Webinar.Data.SQL.DataContext;
 
@@ -39,9 +41,23 @@ namespace Webinar.Data.Test
                     Configuration["Cosmos:ServiceEndpoint"],
                     Configuration["Cosmos:AuthKey"],
                     Configuration["Cosmos:DatabaseName"]));
-            //services.AddTransient<BooksService>();
+
+            services.AddTransient<CloudStorageAccount>(sp =>
+            {
+                return CloudStorageAccount.Parse(Configuration["AzureTable:ConnectionString"]);
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(x => x.FullName);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +75,16 @@ namespace Webinar.Data.Test
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
     }
 }

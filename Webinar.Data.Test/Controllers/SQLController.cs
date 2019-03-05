@@ -10,7 +10,7 @@ using Webinar.Data.SQL.Model;
 
 namespace Webinar.Data.Test.Controllers
 {
-    [Route("api/[controller]/{action}")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SQLController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Webinar.Data.Test.Controllers
             _sqlDataContext = sqlDataContext;
         }
 
-        [HttpGet]
+        [HttpGet("List")]
         public async Task<IEnumerable<TaskList>> List()
         {
             var list = _sqlDataContext.TaskLists.Include(tl => tl.Items).ToList();
@@ -29,7 +29,7 @@ namespace Webinar.Data.Test.Controllers
             return list;
         }
 
-        [HttpPost]
+        [HttpPost("CreateList")]
         public async Task<ActionResult<int>> CreateList(string title)
         {
             var taskList = new TaskList
@@ -43,7 +43,7 @@ namespace Webinar.Data.Test.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("AddTaskItem")]
         public async Task<ActionResult<int>> AddTaskItem(Guid listId, string taskName)
         {
             var taskList = _sqlDataContext.TaskLists.FirstOrDefault(tl => tl.Id == listId);

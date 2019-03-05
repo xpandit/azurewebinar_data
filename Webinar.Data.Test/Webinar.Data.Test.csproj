@@ -12,9 +12,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Webinar.Data.AzureTable\Webinar.Data.AzureTable.csproj" />
     <ProjectReference Include="..\Webinar.Data.Cosmos\Webinar.Data.Cosmos.csproj" />
     <ProjectReference Include="..\Webinar.Data.SQL\Webinar.Data.SQL.csproj" />
   </ItemGroup>
