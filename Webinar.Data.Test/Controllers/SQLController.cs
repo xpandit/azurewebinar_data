@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Webinar.Data.SQL.DataContext;
 using Webinar.Data.SQL.Model;
 
-namespace Webinar.Data.Test.Controllers
+namespace Webinar.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

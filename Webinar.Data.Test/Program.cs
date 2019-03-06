@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Webinar.Data.Test
+namespace Webinar.Data.WebAPI
 {
     public class Program
     {

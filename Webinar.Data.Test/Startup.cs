@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Webinar.Data.Cosmos.DataContext;
 using Webinar.Data.SQL.DataContext;
 
-namespace Webinar.Data.Test
+namespace Webinar.Data.WebAPI
 {
     public class Startup
     {

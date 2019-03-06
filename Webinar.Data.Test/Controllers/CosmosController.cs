@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Webinar.Data.Cosmos.DataContext;
 using Webinar.Data.Cosmos.Model;
 
-namespace Webinar.Data.Test.Controllers
+namespace Webinar.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

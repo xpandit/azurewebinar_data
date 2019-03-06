@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webinar.Data.Test", "Webinar.Data.Test\Webinar.Data.Test.csproj", "{F29B28F7-8904-45AD-910A-BD4E031F5C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webinar.Data.WebAPI", "Webinar.Data.Test\Webinar.Data.WebAPI.csproj", "{F29B28F7-8904-45AD-910A-BD4E031F5C15}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webinar.Data.Cosmos", "Webinar.Data.Cosmos\Webinar.Data.Cosmos.csproj", "{EB53A324-A1E2-4856-A74C-2F06D55B11F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webinar.Data.SQL", "Webinar.Data.SQL\Webinar.Data.SQL.csproj", "{21DC851B-222F-4305-8A90-9D23CFBA5AB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webinar.Data.AzureTable", "Webinar.Data.AzureTable\Webinar.Data.AzureTable.csproj", "{4AC45518-6E31-4D4F-ABF7-EE06F18C15DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webinar.Data.AzureTable", "Webinar.Data.AzureTable\Webinar.Data.AzureTable.csproj", "{4AC45518-6E31-4D4F-ABF7-EE06F18C15DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Webinar.Data.AzureTable.Model;
 
-namespace Webinar.Data.Test.Controllers
+namespace Webinar.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
