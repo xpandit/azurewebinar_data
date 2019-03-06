@@ -4,6 +4,8 @@
 
 ![Resource settings](1.PNG)
 
-- The connection string can be obtained here:
+The storage account name must be unique.
 
-![Connection string](2.PNG)
+- The connection string can be obtained here (highlighted in red):
+
+![Connection string](2.png)
