@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cosmonaut;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Webinar.Data.Cosmos.DataContext;
 using Webinar.Data.Cosmos.Model;
 
 namespace Webinar.Data.WebAPI.Controllers
@@ -12,48 +11,44 @@ namespace Webinar.Data.WebAPI.Controllers
     [ApiController]
     public class CosmosController : ControllerBase
     {
-        private readonly CosmosDataContext _cosmosDataContext;
+        private readonly ICosmosStore<TaskList> _tasksCosmosStore;
 
-        public CosmosController(CosmosDataContext cosmosDataContext)
+        public CosmosController(ICosmosStore<TaskList> tasksCosmosStore)
         {
-            _cosmosDataContext = cosmosDataContext;
-
-            _cosmosDataContext.Database.EnsureCreated();
+            _tasksCosmosStore = tasksCosmosStore;
         }
 
         [HttpGet("List")]
         public async Task<IEnumerable<TaskList>> List()
         {
-            var list = _cosmosDataContext.TaskLists.Include(tl => tl.Items).ToList();
+            var list = await _tasksCosmosStore.Query().ToListAsync();
 
             return list;
         }
 
         [HttpPost("CreateList")]
-        public async Task<ActionResult<int>> CreateList(string title)
+        public async Task<ActionResult<string>> CreateList(string title)
         {
             var taskList = new TaskList
             {
                 Title = title
             };
 
-            _cosmosDataContext.TaskLists.Add(taskList);
-            var result = await _cosmosDataContext.SaveChangesAsync();
+            var result = await _tasksCosmosStore.UpsertAsync(taskList);
 
-            return result;
+            return result.Entity.Id;
         }
 
         [HttpPost("AddTaskItem")]
-        public async Task<ActionResult<int>> AddTaskItem(string listId, string taskName)
+        public async Task<ActionResult<string>> AddTaskItem(string listId, string taskName)
         {
-            var taskList = _cosmosDataContext.TaskLists.FirstOrDefault(tl => tl.Id == listId);
+            var taskList = await _tasksCosmosStore.FindAsync(listId);
 
             taskList.Items.Add(new TaskItem { Name = taskName });
 
-            _cosmosDataContext.TaskLists.Update(taskList);
-            var result = await _cosmosDataContext.SaveChangesAsync();
+            var result = await _tasksCosmosStore.UpsertAsync(taskList);
 
-            return result;
+            return result.Entity.Id;
         }
     }
 }

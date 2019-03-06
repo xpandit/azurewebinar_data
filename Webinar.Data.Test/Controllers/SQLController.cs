@@ -24,7 +24,7 @@ namespace Webinar.Data.WebAPI.Controllers
         [HttpGet("List")]
         public async Task<IEnumerable<TaskList>> List()
         {
-            var list = _sqlDataContext.TaskLists.Include(tl => tl.Items).ToList();
+            var list = await _sqlDataContext.TaskLists.Include(tl => tl.Items).ToListAsync();
 
             return list;
         }

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cosmonaut;
+using Cosmonaut.Extensions.Microsoft.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Swashbuckle.AspNetCore.Swagger;
-using Webinar.Data.Cosmos.DataContext;
+using Webinar.Data.Cosmos.Model;
 using Webinar.Data.SQL.DataContext;
 
 namespace Webinar.Data.WebAPI
@@ -31,16 +34,24 @@ namespace Webinar.Data.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFrameworkSqlServer();
-            services.AddEntityFrameworkCosmos();
 
             services.AddDbContext<SQLDataContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SqlDatabase")));
 
-            services.AddDbContext<CosmosDataContext>(options => 
-                options.UseCosmos(
-                    Configuration["Cosmos:ServiceEndpoint"],
-                    Configuration["Cosmos:AuthKey"],
-                    Configuration["Cosmos:DatabaseName"]));
+            var connectionPolicy = new ConnectionPolicy
+            {
+                ConnectionProtocol = Protocol.Tcp,
+                ConnectionMode = ConnectionMode.Direct
+            };
+
+            var cosmosSettings = new CosmosStoreSettings(
+                Configuration["Cosmos:DatabaseName"],
+                Configuration["Cosmos:ServiceEndpoint"],
+                Configuration["Cosmos:AuthKey"],
+                connectionPolicy, 
+                defaultCollectionThroughput: 400);
+
+            services.AddCosmosStore<TaskList>(cosmosSettings);
 
             services.AddTransient<CloudStorageAccount>(sp =>
             {
